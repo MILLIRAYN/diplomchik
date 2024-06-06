@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Авторизация</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff; /* Светло-голубой фон */
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .login-container {
+            background-color: #e6f7ff; /* Более светлый голубой фон для формы */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        .login-container h1 {
+            margin-bottom: 20px;
+            color: #0073e6; /* Синий цвет для заголовка */
+        }
+        .login-container div {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .login-container label {
+            display: block;
+            margin-bottom: 5px;
+            color: #005bb5; /* Более тёмный синий для меток */
+        }
+        .login-container input {
+            width: 100%; /* Учёт padding и border */
+            padding: 10px;
+            border: 1px solid #0073e6;
+            border-radius: 5px;
+            box-sizing: border-box; /* Чтобы padding и border входили в ширину */
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0073e6; /* Синий цвет для кнопки */
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .login-container button:hover {
+            background-color: #005bb5; /* Более тёмный синий для кнопки при наведении */
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h1>Авторизация</h1>
+    <form th:action="@{/signin}" enctype="multipart/form-data" th:object="${loginRequest}" method="post">
+        <div>
+            <label>Логин:</label>
+            <input type="text" th:field="*{username}">
+        </div>
+        <div>
+            <label>Пароль:</label>
+            <input type="password" th:field="*{password}">
+        </div>
+        <div>
+
+        </div>
+        <div>
+            <button type="submit">Войти</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#').on('submit', function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $('#alert').removeClass('close').addClass('success').html('Файл успешно загружен!');
+                    $('#uploadForm')[0].reset();
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + xhr.statusText;
+                    $('#alert').removeClass('close').removeClass('success').html('Ошибка - ' + errorMessage);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
